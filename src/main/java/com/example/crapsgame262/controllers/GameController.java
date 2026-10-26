@@ -3,6 +3,7 @@ package com.example.crapsgame262.controllers;
 import com.example.crapsgame262.models.Dice;
 import com.example.crapsgame262.models.Player;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -53,5 +54,19 @@ public class GameController {
                         )
                 )
         );
+    }
+    @FXML
+    private void onHelpClick() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Instrucciones del Juego - Craps");
+        alert.setHeaderText("¿Cómo jugar a Craps?");
+        alert.setContentText(
+                "1. Realiza tu tiro inicial tirando los dados.\n" +
+                        "2. Si en tu primer tiro sacas un 7 o un 11: ¡Ganas automáticamente!\n" +
+                        "3. Si sacas un 2, 3 o 12: Es 'Craps' y pierdes.\n" +
+                        "4. Si sacas 4, 5, 6, 8, 9 o 10: Ese valor se convierte en tu 'Punto'.\n" +
+                        "5. Con el 'Punto' establecido, sigue tirando: Si vuelves a sacar ese mismo número antes que un 7, ¡ganas! Si sacas un 7 antes del punto, pierdes."
+        );
+        alert.showAndWait();
     }
 }
