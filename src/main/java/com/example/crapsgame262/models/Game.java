@@ -15,6 +15,8 @@ public class Game {
     private GameStatus status;
     private int point;
     private int lastTotal;
+    private int gamesWon;
+    private int gamesLost;
 
     public Game() {
         dice1 = new Dice();
@@ -46,8 +48,10 @@ public class Game {
     private void resolveComeOut(int total) {
         if (total == 7 || total == 11) {
             status = GameStatus.WON;
+            gamesWon++;
         } else if (total == 2 || total == 3 || total == 12) {
             status = GameStatus.LOST;
+            gamesLost++;
         } else {
             point = total;
             status = GameStatus.POINT;
@@ -61,8 +65,10 @@ public class Game {
     private void resolvePoint(int total) {
         if (total == point) {
             status = GameStatus.WON;
+            gamesWon++;
         } else if (total == 7) {
             status = GameStatus.LOST;
+            gamesLost++;
         }
     }
 
@@ -87,6 +93,14 @@ public class Game {
 
     public int getLastTotal() {
         return lastTotal;
+    }
+
+    public int getGamesWon() {
+        return gamesWon;
+    }
+
+    public int getGamesLost() {
+        return gamesLost;
     }
 
     public Dice getDice1() {
