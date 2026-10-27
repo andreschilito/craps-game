@@ -6,13 +6,13 @@ import com.example.crapsgame262.models.GameStatus;
 import com.example.crapsgame262.models.Player;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import com.example.crapsgame262.models.AlertBoxInterface;
 
 /**
  * Controller for the Craps game view.
@@ -30,7 +30,7 @@ public class GameController {
     private Player currentPlayer;
 
     private final Game game = new Game();
-    private final AlertBox alertBox = new AlertBox();
+    private final AlertBoxInterface alertBox = new AlertBox();
 
     /** Image view that shows the first die. */
     @FXML
@@ -101,16 +101,6 @@ public class GameController {
         if (game.isFinished()) {
             finishRound();
         }
-    }
-
-    @FXML
-    void onMouseClickedHelpButton(MouseEvent event) {
-        alertBox.showAlertBox(
-                "Craps Game - Reglas",
-                "Reglas del Craps",
-                "1. Tiro de salida: si sacas 7 u 11 ganas; si sacas 2, 3 o 12 pierdes.\n"
-                        + "2. Cualquier otro total (4, 5, 6, 8, 9, 10) fija el punto.\n"
-                        + "3. Repite el punto antes de sacar un 7 para ganar.");
     }
 
     private void showDice() {
@@ -185,17 +175,14 @@ public class GameController {
     }
     @FXML
     private void onHelpClick() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Instrucciones del Juego - Craps");
-        alert.setHeaderText("¿Cómo jugar a Craps?");
-        alert.setContentText(
-                "1. Realiza tu tiro inicial tirando los dados.\n" +
-                        "2. Si en tu primer tiro sacas un 7 o un 11: ¡Ganas automáticamente!\n" +
-                        "3. Si sacas un 2, 3 o 12: Es 'Craps' y pierdes.\n" +
-                        "4. Si sacas 4, 5, 6, 8, 9 o 10: Ese valor se convierte en tu 'Punto'.\n" +
-                        "5. Con el 'Punto' establecido, sigue tirando: Si vuelves a sacar ese mismo número antes que un 7, ¡ganas! Si sacas un 7 antes del punto, pierdes."
-        );
-        alert.showAndWait();
+        alertBox.showAlertBox(
+            "Craps Game - Instructions",
+            "How to Play Craps",
+            "1. Roll two dice to start.\n"
+                    + "2. A first roll of 7 or 11 wins immediately.\n"
+                    + "3. A first roll of 2, 3, or 12 loses immediately.\n"
+                    + "4. Any other first roll establishes the point.\n"
+                    + "5. Roll the point again before rolling a 7 to win.");
     }
 
     /**
