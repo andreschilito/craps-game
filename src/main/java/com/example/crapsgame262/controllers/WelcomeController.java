@@ -18,12 +18,13 @@ public class WelcomeController {
     void onMouseClickedBtnStart(MouseEvent event) {
         String nickname = textFieldNickname.getText();
 
-        if (nickname == "") {
+        if (nickname == null || nickname.trim().isEmpty()) {
             AlertBox alertBox = new AlertBox();
             alertBox.showAlertBox(
                     "Craps Game - Nombre de usuario",
                     "Nombre de usuario",
                     "Debes diligenciar tu nombre de usuario.");
+            return;
         }
 
         Player player = new Player();

@@ -5,6 +5,7 @@ import javafx.scene.control.ButtonType;
 
 import java.util.Optional;
 
+/** Adapts the application's dialog interface to JavaFX Alert dialogs. */
 public class AlertBox implements AlertBoxInterface {
 
     @Override

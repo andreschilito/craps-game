@@ -1,76 +1,113 @@
 package com.example.crapsgame262.models;
 
 /**
- * Represents the state and rules of a Craps game.
+ * Modelo con la lógica del juego de Craps.
  *
- * <p>This class is currently a skeleton. The game rules and scoreboard
- * updates will be implemented in later iterations.</p>
- *
- * @author Jhonathan Delgado
- * @version 1.0
- * @since 1.0
+ * No conoce JavaFX ni la interfaz: solo lanza los dados, aplica las reglas
+ * y expone el estado de la partida. El {@code GameController} se encarga
+ * de leer este estado y mostrarlo en pantalla.
  */
 public class Game {
 
-    /**
-     * Plays one round using the values of the two dice.
-     *
-     * @param die1 value of the first die
-     * @param die2 value of the second die
-     */
-    public void play(int die1, int die2) {
-        // TODO: implement the Craps rules
+    private final Dice dice1;
+    private final Dice dice2;
+
+    private GameStatus status;
+    private int point;
+    private int lastTotal;
+    private int gamesWon;
+    private int gamesLost;
+
+    public Game() {
+        dice1 = new Dice();
+        dice2 = new Dice();
+        reset();
     }
 
     /**
-     * Starts a new round while keeping the accumulated score.
+     * Lanza los dos dados y resuelve la jugada según la fase actual.
+     *
+     * @return el total obtenido en los dados.
      */
-    public void newRound() {
-        // TODO: reset the point and the round result
+    public int roll() {
+        lastTotal = dice1.roll() + dice2.roll();
+
+        if (status == GameStatus.COME_OUT) {
+            resolveComeOut(lastTotal);
+        } else if (status == GameStatus.POINT) {
+            resolvePoint(lastTotal);
+        }
+
+        return lastTotal;
     }
 
     /**
-     * Returns the current point.
-     *
-     * @return the point, or {@code 0} if no point has been established
+     * Tiro de salida:
+     * 7 u 11 gana, 2/3/12 pierde (craps) y cualquier otro total fija el punto.
      */
+    private void resolveComeOut(int total) {
+        if (total == 7 || total == 11) {
+            status = GameStatus.WON;
+            gamesWon++;
+        } else if (total == 2 || total == 3 || total == 12) {
+            status = GameStatus.LOST;
+            gamesLost++;
+        } else {
+            point = total;
+            status = GameStatus.POINT;
+        }
+    }
+
+    /**
+     * Fase de punto: repetir el punto gana; sacar 7 antes pierde.
+     * Cualquier otro total no cambia nada y se sigue lanzando.
+     */
+    private void resolvePoint(int total) {
+        if (total == point) {
+            status = GameStatus.WON;
+            gamesWon++;
+        } else if (total == 7) {
+            status = GameStatus.LOST;
+            gamesLost++;
+        }
+    }
+
+    /** Deja la partida lista para una nueva ronda. */
+    public void reset() {
+        status = GameStatus.COME_OUT;
+        point = 0;
+        lastTotal = 0;
+    }
+
+    public boolean isFinished() {
+        return status == GameStatus.WON || status == GameStatus.LOST;
+    }
+
+    public GameStatus getStatus() {
+        return status;
+    }
+
     public int getPoint() {
-        return 0;
+        return point;
     }
 
-    /**
-     * Returns the total obtained in the last roll.
-     *
-     * @return the sum of the last two dice
-     */
-    public int getLastRoll() {
-        return 0;
+    public int getLastTotal() {
+        return lastTotal;
     }
 
-    /**
-     * Returns the number of games won.
-     *
-     * @return the accumulated number of wins
-     */
     public int getGamesWon() {
-        return 0;
+        return gamesWon;
     }
 
-    /**
-     * Returns the number of games lost.
-     *
-     * @return the accumulated number of losses
-     */
     public int getGamesLost() {
-        return 0;
+        return gamesLost;
     }
 
-    /**
-     * Indicates whether the current round has finished.
-     *
-     * @return {@code true} if the round is over; {@code false} otherwise
-     */
-    public boolean isGameOver() {
-        return false;
+    public Dice getDice1() {
+        return dice1;
+    }
+
+    public Dice getDice2() {
+        return dice2;
     }
 }
