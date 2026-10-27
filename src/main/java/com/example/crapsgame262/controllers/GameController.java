@@ -154,6 +154,8 @@ public class GameController {
         String result = playerWon ? "¡Ganaste!" : "¡Perdiste!";
 
         appendMessage("Fin de la ronda. " + result);
+        appendMessage("Juegos ganados: " + game.getGamesWon()
+            + " | Juegos perdidos: " + game.getGamesLost());
 
         boolean playAgain = alertBox.showConfirmBox(
                 "Craps Game",
